@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +23,9 @@ namespace RecipesApp.Controllers
         // GET: Recipes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Recipes.ToListAsync());
+
+			List<Recipe> recipes = await _context.Recipes.ToListAsync();
+            return View(recipes);
         }
 
         // GET: Recipes/Details/5
@@ -30,7 +33,7 @@ namespace RecipesApp.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             var recipe = await _context.Recipes
@@ -44,6 +47,7 @@ namespace RecipesApp.Controllers
         }
 
         // GET: Recipes/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -54,7 +58,8 @@ namespace RecipesApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RecipeId,Name,Category,Ingredients,Description,CookingAdvic,Images,CreatedDate,IsSalable,Ratings,Quantity,Price")] Recipe recipe)
+        [Authorize]
+        public async Task<IActionResult> Create([Bind("RecipeId,Name,Category,Ingredients,Description,CookingAdvice,Image,Ratings,IsSalable,Stock,Price")] Recipe recipe)
         {
             if (ModelState.IsValid)
             {
@@ -66,6 +71,7 @@ namespace RecipesApp.Controllers
         }
 
         // GET: Recipes/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -86,7 +92,8 @@ namespace RecipesApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RecipeId,Name,Category,Ingredients,Description,CookingAdvic,Images,CreatedDate,IsSalable,Ratings,Quantity,Price")] Recipe recipe)
+        [Authorize]
+        public async Task<IActionResult> Edit(int id, [Bind("RecipeId,Name,Category,Ingredients,Description,CookingAdvice,Image,Ratings,IsSalable,Stock,Price")] Recipe recipe)
         {
             if (id != recipe.RecipeId)
             {
@@ -117,6 +124,7 @@ namespace RecipesApp.Controllers
         }
 
         // GET: Recipes/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -137,6 +145,7 @@ namespace RecipesApp.Controllers
         // POST: Recipes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var recipe = await _context.Recipes.FindAsync(id);

@@ -9,8 +9,8 @@ using RecipesApp.Data;
 namespace RecipesApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210630164052_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20210630192200_UpdateRecipeModel")]
+    partial class UpdateRecipeModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -223,19 +223,24 @@ namespace RecipesApp.Data.Migrations
                     b.Property<string>("Category")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("CookingAdvic")
+                    b.Property<string>("CookingAdvice")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("CookingTime")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
+                        .HasMaxLength(1500)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Images")
+                    b.Property<string>("Image")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Ingredients")
+                        .HasMaxLength(1500)
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsSalable")
@@ -247,10 +252,10 @@ namespace RecipesApp.Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int?>("Ratings")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Ratings")
+                    b.Property<int>("Stock")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("RecipeId");

@@ -1,10 +1,13 @@
 using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace RecipesApp.Models
 {
 	public class Recipe
 	{
 		public Recipe()
 		{
+			CreatedDate = DateTime.Now;
 		}
 
 		public int RecipeId { get; set; }
@@ -13,23 +16,29 @@ namespace RecipesApp.Models
 
 		public string Category { get; set; }
 
+		[MaxLength(1500)]
+		[DataType(DataType.MultilineText)]
 		public string Ingredients { get; set; }
 
+		[MaxLength(1500)]
+		[DataType(DataType.MultilineText)]
 		public string Description { get; set; }
 
-		public string CookingAdvic { get; set; }
+		public int CookingTime { get; set; }
 
-		public string Images { get; set; } // ?
+		public string CookingAdvice { get; set; }
 
+		public string Image { get; set; }
+
+		[ScaffoldColumn(false)]
+		[DataType(DataType.Date)]
 		public DateTime CreatedDate { get; set; }
+
+		public int? Ratings { get; set; }
 
 		public bool IsSalable { get; set; }
 
-		public int Ratings { get; set; }
-
 		public int Stock { get; set; }
-
-		public int Quantity { get; set; }
 
 		public decimal Price { get; set; }
 	}
