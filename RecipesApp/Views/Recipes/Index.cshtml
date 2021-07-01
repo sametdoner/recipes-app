@@ -1,17 +1,28 @@
 @model IEnumerable<RecipesApp.Models.Recipe>
 
-@{
-	ViewData["Title"] = "My Recipes";
-}
+@{ ViewData["Title"] = "My Recipes"; }
 
+@if (Model.Count() == 0)
+{
 <div class="container">
-    <h1>My Recipes</h1>
+    <h3>You didn't add any recipe yet. Please login to add your recipes. You can add them with "Create" button.</h3>
     @if (User.Identity.IsAuthenticated)
-	{
+    {
         <p>
             <a asp-action="Create">Create New Recipe</a>
         </p>
-	}
+    }
+</div>
+}
+else { 
+<div class="container">
+    <h1>My Recipes</h1>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <p>
+            <a asp-action="Create">Create New Recipe</a>
+        </p>
+    }
     <div class="row">
         @foreach (var item in Model)
         {
@@ -35,4 +46,4 @@
         }
     </div>
 </div>
-
+}

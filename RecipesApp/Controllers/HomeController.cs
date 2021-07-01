@@ -22,12 +22,17 @@ namespace RecipesApp.Controllers
             this.dbContext = dbContext;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(SearchViewModel searchModel)
         {
-            var query = dbContext.Recipes;
-			List<Recipe> result = await query.ToListAsync();
-			return View(result);
-        }
+            var query = dbContext.Recipes.Include(c => c.Category).AsQueryable();
+
+            if(!String.IsNullOrWhiteSpace(searchModel.SearchText)) {
+                query = query.Where(t => t.Name.Contains(searchModel.SearchText));
+            }
+            searchModel.Result = await query.ToListAsync();
+
+			return View(searchModel);
+		}
 
         public IActionResult Privacy()
         {

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<RecipesApp.Models.Recipe>
+﻿@*@model IEnumerable<RecipesApp.Models.Recipe>*@
+@model SearchViewModel
 
 @{ ViewData["Title"] = "Home"; }
 
@@ -7,7 +8,17 @@
         <h1 class="display-4">Welcome</h1>
     </div>
     <div class="row">
-        @foreach (var item in Model)
+        @*<form asp-action="Index" asp-controller="Home" method="get">
+            <div class="form-group">
+                <label asp-for="SearchText" class="control-label"></label>
+                <input asp-for="SearchText" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        </form>*@
+
+        @foreach (var item in Model.Result)
         {
             <div class="col-sm-4 mr-2">
                 <div class="card">
