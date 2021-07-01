@@ -1,8 +1,26 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<RecipesApp.Models.Recipe>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@{ ViewData["Title"] = "Home"; }
+
+<div class="container">
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+    </div>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-sm-4 mr-2">
+                <div class="card">
+                    <div class="card-body">
+                        <img src="@Url.Content(item.Image)" alt="Image" />
+                        @*<img src="@Html.DisplayFor(modelItem => item.Image)" />*@
+                        <p>@Html.DisplayFor(modelItem => item.Name)</p>
+                        <p>@Html.DisplayFor(modelItem => item.Category.Name)</p>
+                        <p>@Html.DisplayFor(modelItem => item.Ratings)</p>
+                        <a asp-action="Details" asp-route-id="@item.RecipeId">Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>

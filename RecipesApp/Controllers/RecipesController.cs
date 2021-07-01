@@ -60,7 +60,7 @@ namespace RecipesApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("RecipeId,Name,Category,Ingredients,Description,CookingAdvice,Image,Ratings,IsSalable,Stock,Price")] Recipe recipe)
+        public async Task<IActionResult> Create([Bind("RecipeId,Name,CategoryId,Ingredients,Description,CookingAdvice,Image,Ratings,IsSalable,Stock,Price")] Recipe recipe)
         {
             if (ModelState.IsValid)
             {
@@ -68,6 +68,7 @@ namespace RecipesApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", recipe.CategoryId);
             return View(recipe);
         }
 
@@ -85,6 +86,7 @@ namespace RecipesApp.Controllers
             {
                 return NotFound();
             }
+            ViewBag.CategorySelectList = new SelectList(_context.Categories, "Id", "Name");
             return View(recipe);
         }
 
@@ -94,7 +96,7 @@ namespace RecipesApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("RecipeId,Name,Category,Ingredients,Description,CookingAdvice,Image,Ratings,IsSalable,Stock,Price")] Recipe recipe)
+        public async Task<IActionResult> Edit(int id, [Bind("RecipeId,Name,CategoryId,Ingredients,Description,CookingAdvice,Image,Ratings,IsSalable,Stock,Price")] Recipe recipe)
         {
             if (id != recipe.RecipeId)
             {
@@ -119,6 +121,7 @@ namespace RecipesApp.Controllers
                         throw;
                     }
                 }
+                ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", recipe.CategoryId);
                 return RedirectToAction(nameof(Index));
             }
             return View(recipe);
@@ -139,7 +142,7 @@ namespace RecipesApp.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.CategorySelectList = new SelectList(_context.Categories, "Id", "Name");
             return View(recipe);
         }
 
