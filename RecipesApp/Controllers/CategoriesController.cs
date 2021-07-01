@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,68 +10,62 @@ using RecipesApp.Models;
 
 namespace RecipesApp.Controllers
 {
-    public class RecipesController : Controller
+    public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public RecipesController(ApplicationDbContext context)
+        public CategoriesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Recipes
+        // GET: Categories
         public async Task<IActionResult> Index()
         {
-
-			List<Recipe> recipes = await _context.Recipes.ToListAsync();
-            return View(recipes);
+            return View(await _context.Categories.ToListAsync());
         }
 
-        // GET: Recipes/Details/5
+        // GET: Categories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            var recipe = await _context.Recipes
-                .FirstOrDefaultAsync(m => m.RecipeId == id);
-            if (recipe == null)
+            var category = await _context.Categories
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return View(recipe);
+            return View(category);
         }
 
-        // GET: Recipes/Create
-        [Authorize]
+        // GET: Categories/Create
         public IActionResult Create()
         {
-			ViewBag.CategorySelectList = new SelectList(_context.Categories, "Id", "Name");
-			return View();
+            return View();
         }
 
-        // POST: Recipes/Create
+        // POST: Categories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
-        public async Task<IActionResult> Create([Bind("RecipeId,Name,Category,Ingredients,Description,CookingAdvice,Image,Ratings,IsSalable,Stock,Price")] Recipe recipe)
+        public async Task<IActionResult> Create([Bind("Id,Name")] Category category)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(recipe);
+                _context.Add(category);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(recipe);
+            return View(category);
         }
 
-        // GET: Recipes/Edit/5
-        [Authorize]
+        // GET: Categories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,23 +73,22 @@ namespace RecipesApp.Controllers
                 return NotFound();
             }
 
-            var recipe = await _context.Recipes.FindAsync(id);
-            if (recipe == null)
+            var category = await _context.Categories.FindAsync(id);
+            if (category == null)
             {
                 return NotFound();
             }
-            return View(recipe);
+            return View(category);
         }
 
-        // POST: Recipes/Edit/5
+        // POST: Categories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("RecipeId,Name,Category,Ingredients,Description,CookingAdvice,Image,Ratings,IsSalable,Stock,Price")] Recipe recipe)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Category category)
         {
-            if (id != recipe.RecipeId)
+            if (id != category.Id)
             {
                 return NotFound();
             }
@@ -105,12 +97,12 @@ namespace RecipesApp.Controllers
             {
                 try
                 {
-                    _context.Update(recipe);
+                    _context.Update(category);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RecipeExists(recipe.RecipeId))
+                    if (!CategoryExists(category.Id))
                     {
                         return NotFound();
                     }
@@ -121,11 +113,10 @@ namespace RecipesApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(recipe);
+            return View(category);
         }
 
-        // GET: Recipes/Delete/5
-        [Authorize]
+        // GET: Categories/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -133,31 +124,30 @@ namespace RecipesApp.Controllers
                 return NotFound();
             }
 
-            var recipe = await _context.Recipes
-                .FirstOrDefaultAsync(m => m.RecipeId == id);
-            if (recipe == null)
+            var category = await _context.Categories
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return View(recipe);
+            return View(category);
         }
 
-        // POST: Recipes/Delete/5
+        // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var recipe = await _context.Recipes.FindAsync(id);
-            _context.Recipes.Remove(recipe);
+            var category = await _context.Categories.FindAsync(id);
+            _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool RecipeExists(int id)
+        private bool CategoryExists(int id)
         {
-            return _context.Recipes.Any(e => e.RecipeId == id);
+            return _context.Categories.Any(e => e.Id == id);
         }
     }
 }

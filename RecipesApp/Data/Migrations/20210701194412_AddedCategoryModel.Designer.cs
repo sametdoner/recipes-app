@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RecipesApp.Data;
 
-namespace RecipesApp.Data.Migrations
+namespace RecipesApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210630192200_UpdateRecipeModel")]
-    partial class UpdateRecipeModel
+    [Migration("20210701194412_AddedCategoryModel")]
+    partial class AddedCategoryModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -214,14 +214,29 @@ namespace RecipesApp.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("RecipesApp.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("RecipesApp.Models.Recipe", b =>
                 {
                     b.Property<int>("RecipeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Category")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("CookingAdvice")
                         .HasColumnType("TEXT");
@@ -247,6 +262,7 @@ namespace RecipesApp.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Price")
@@ -259,6 +275,8 @@ namespace RecipesApp.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("RecipeId");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Recipes");
                 });
@@ -312,6 +330,22 @@ namespace RecipesApp.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("RecipesApp.Models.Recipe", b =>
+                {
+                    b.HasOne("RecipesApp.Models.Category", "Category")
+                        .WithMany("Recipes")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("RecipesApp.Models.Category", b =>
+                {
+                    b.Navigation("Recipes");
                 });
 #pragma warning restore 612, 618
         }

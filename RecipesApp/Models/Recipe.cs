@@ -12,9 +12,12 @@ namespace RecipesApp.Models
 
 		public int RecipeId { get; set; }
 
+		[Required(ErrorMessage = "Please enter title of your recipe")]
 		public string Name { get; set; }
 
-		public string Category { get; set; }
+		public int CategoryId { get; set; }
+
+		public virtual Category Category { get; set; }
 
 		[MaxLength(1500)]
 		[DataType(DataType.MultilineText)]
@@ -24,6 +27,7 @@ namespace RecipesApp.Models
 		[DataType(DataType.MultilineText)]
 		public string Description { get; set; }
 
+		[Display(Name = "Cooking Time")]
 		public int CookingTime { get; set; }
 
 		public string CookingAdvice { get; set; }

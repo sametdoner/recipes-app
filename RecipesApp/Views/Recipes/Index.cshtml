@@ -1,11 +1,11 @@
 @model IEnumerable<RecipesApp.Models.Recipe>
 
 @{
-	ViewData["Title"] = "Recipes";
+	ViewData["Title"] = "My Recipes";
 }
 
 <div class="container">
-    <h1>All Recipes</h1>
+    <h1>My Recipes</h1>
     @if (User.Identity.IsAuthenticated)
 	{
         <p>
@@ -21,7 +21,7 @@
                         <img src="@Url.Content(item.Image)" alt="Image" />
                         @*<img src="@Html.DisplayFor(modelItem => item.Image)" />*@
                         <p>@Html.DisplayFor(modelItem => item.Name)</p>
-                        <p>@Html.DisplayFor(modelItem => item.Category)</p>
+                        <p>@Html.DisplayFor(modelItem => item.Category.Name)</p>
                         <p>@Html.DisplayFor(modelItem => item.Ratings)</p>
                         <a asp-action="Details" asp-route-id="@item.RecipeId">Details</a>
                         @if (User.Identity.IsAuthenticated)
