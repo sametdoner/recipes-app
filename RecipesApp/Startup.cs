@@ -32,7 +32,10 @@ namespace RecipesApp
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<IdentityUser>(options => {
+                options.SignIn.RequireConfirmedAccount = true;
+                options.Lockout.MaxFailedAccessAttempts = 5;
+            })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
         }
