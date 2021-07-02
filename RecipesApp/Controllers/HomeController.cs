@@ -29,7 +29,7 @@ namespace RecipesApp.Controllers
             if(!String.IsNullOrWhiteSpace(searchModel.SearchText)) {
                 query = query.Where(t => t.Name.Contains(searchModel.SearchText));
             }
-            searchModel.Result = await query.ToListAsync();
+            searchModel.Result = await query.Where(c => !c.IsSalable).ToListAsync();
 
 			return View(searchModel);
 		}

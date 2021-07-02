@@ -2,7 +2,7 @@
 
 @foreach (var item in Model)
 {
-    <li class="nav-tem">
-        <a class="nav-link text-dark" asp-controller="Recipes" asp-action="Index" asp-route-categoryId="@item.Id">@item.Name</a>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-controller="Categories" asp-action="List" asp-route-CategoryId="@item.Id">@item.Name</a>
     </li>
 }
