@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,17 +15,30 @@ namespace RecipesApp.Controllers
     public class RecipesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<RecipeUser> _userManager;
 
-        public RecipesController(ApplicationDbContext context)
+        public RecipesController(ApplicationDbContext context, UserManager<RecipeUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Recipes
         public async Task<IActionResult> Index()
         {
+            List<Recipe> recipes;
+            if(User.Identity.IsAuthenticated)
+			{
+                var recipeUser = await _userManager.GetUserAsync(HttpContext.User);
+                var query = _context.Recipes.Include(t => t.Category).Where(t => t.RecipeUserId == recipeUser.Id);
 
-			List<Recipe> recipes = await _context.Recipes.ToListAsync();
+                recipes = await query.ToListAsync();
+            }
+            else
+			{
+                recipes = new List<Recipe>();
+			}
+            
             return View(recipes);
         }
 
@@ -62,6 +76,9 @@ namespace RecipesApp.Controllers
         [Authorize]
         public async Task<IActionResult> Create([Bind("RecipeId,Name,CategoryId,Ingredients,Description,CookingAdvice,Image,Ratings,IsSalable,Stock,Price")] Recipe recipe)
         {
+            var recipeUser = await _userManager.GetUserAsync(HttpContext.User);
+            recipe.RecipeUserId = recipeUser.Id;
+
             if (ModelState.IsValid)
             {
                 _context.Add(recipe);
@@ -80,8 +97,13 @@ namespace RecipesApp.Controllers
             {
                 return NotFound();
             }
-
             var recipe = await _context.Recipes.FindAsync(id);
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            if (recipe.RecipeUserId != currentUser.Id)
+            {
+                return Unauthorized();
+            }
+
             if (recipe == null)
             {
                 return NotFound();
@@ -96,7 +118,7 @@ namespace RecipesApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("RecipeId,Name,CategoryId,Ingredients,Description,CookingAdvice,Image,Ratings,IsSalable,Stock,Price")] Recipe recipe)
+        public async Task<IActionResult> Edit(int id, [Bind("RecipeId,Name,CategoryId,Ingredients,Description,CookingAdvice,Image,Ratings,IsSalable,Stock,Price, RecipeUserId")] Recipe recipe)
         {
             if (id != recipe.RecipeId)
             {
@@ -107,7 +129,22 @@ namespace RecipesApp.Controllers
             {
                 try
                 {
-                    _context.Update(recipe);
+                    var oldRecipe = await _context.Recipes.FindAsync(id);
+                    var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+                    if(oldRecipe.RecipeUserId == currentUser.Id)
+					{
+                        return Unauthorized();
+					}
+                    oldRecipe.Name = recipe.Name;
+                    oldRecipe.Ingredients = recipe.Ingredients;
+                    oldRecipe.IsSalable = recipe.IsSalable;
+                    oldRecipe.Stock = recipe.Stock;
+                    oldRecipe.CookingAdvice = recipe.CookingAdvice;
+                    oldRecipe.Description = recipe.Description;
+                    oldRecipe.Price = recipe.Price;
+                    oldRecipe.Ratings = recipe.Ratings;
+
+                    _context.Update(oldRecipe);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -138,6 +175,12 @@ namespace RecipesApp.Controllers
 
             var recipe = await _context.Recipes
                 .FirstOrDefaultAsync(m => m.RecipeId == id);
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            if (recipe.RecipeUserId != currentUser.Id)
+            {
+                return Unauthorized();
+            }
+
             if (recipe == null)
             {
                 return NotFound();

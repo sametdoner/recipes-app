@@ -45,5 +45,9 @@ namespace RecipesApp.Models
 		public int Stock { get; set; }
 
 		public decimal Price { get; set; }
+
+		public string RecipeUserId { get; set; }
+
+		public virtual RecipeUser RecipeUser { get; set; }
 	}
 }

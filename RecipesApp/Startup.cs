@@ -12,6 +12,7 @@ using RecipesApp.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RecipesApp.Models;
 
 namespace RecipesApp
 {
@@ -32,7 +33,7 @@ namespace RecipesApp
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => {
+            services.AddDefaultIdentity<RecipeUser>(options => {
                 options.SignIn.RequireConfirmedAccount = true;
                 options.Lockout.MaxFailedAccessAttempts = 5;
             })
