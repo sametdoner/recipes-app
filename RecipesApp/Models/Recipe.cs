@@ -15,6 +15,7 @@ namespace RecipesApp.Models
 		[Required(ErrorMessage = "Please enter title of your recipe")]
 		public string Name { get; set; }
 
+		[Display(Name = "Category Name")]
 		public int CategoryId { get; set; }
 
 		public virtual Category Category { get; set; }
@@ -30,6 +31,7 @@ namespace RecipesApp.Models
 		[Display(Name = "Cooking Time")]
 		public int CookingTime { get; set; }
 
+		[Display(Name = "Cooking Advice")]
 		public string CookingAdvice { get; set; }
 
 		public string Image { get; set; }
@@ -38,13 +40,10 @@ namespace RecipesApp.Models
 		[DataType(DataType.Date)]
 		public DateTime CreatedDate { get; set; }
 
-		public int? Ratings { get; set; }
-
+		[Display(Name = "Is Salable?")]
 		public bool IsSalable { get; set; }
 
-		public int Stock { get; set; }
-
-		public decimal Price { get; set; }
+		public decimal? Price { get; set; }
 
 		public string RecipeUserId { get; set; }
 

@@ -5,7 +5,8 @@
 
 <div class="container">
     <div class="text-center">
-        <h1 class="display-4">Welcome</h1>
+        <h2>Welcome to the RecipeApp</h2>
+        <p class="mb-5">You can see the added recipes. By registering, you can create a new recipe and contribute to the platform. You can also sell your recipe on the platform if you want.</p>
     </div>
     <div class="row">
         @*<form asp-action="Index" asp-controller="Home" method="get">
@@ -20,15 +21,13 @@
 
         @foreach (var item in Model.Result)
         {
-            <div class="col-sm-4 mr-2">
+            <div class="col-sm-4">
                 <div class="card">
-                    <div class="card-body">
-                        <p>@item.Image"</p>
-                        <p>@Html.DisplayFor(modelItem => item.Image)</p>
-                        <p>@Html.DisplayFor(modelItem => item.Name)</p>
-                        <p>@Html.DisplayFor(modelItem => item.Category.Name)</p>
-                        <p>@Html.DisplayFor(modelItem => item.Ratings)</p>
-                        <a asp-action="Details" asp-controller="Recipes" asp-route-id="@item.RecipeId">Details</a>
+                    <div class="card-body p-0">
+                        <img class="w-100" src="@Url.Content(item.Image)" alt="Image" />
+                        <p class="pl-2">@Html.DisplayFor(modelItem => item.Name)</p>
+                        <p class="pl-2">@Html.DisplayFor(modelItem => item.Category.Name)</p>
+                        <a class="m-2 btn btn-primary form-control w-25 text-center" asp-action="Details" asp-controller="Recipes" asp-route-id="@item.RecipeId">Details</a>
                     </div>
                 </div>
             </div>

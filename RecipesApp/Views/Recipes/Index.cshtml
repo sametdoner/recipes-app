@@ -19,6 +19,7 @@ else {
     <h1>My Recipes</h1>
     @if (User.Identity.IsAuthenticated)
     {
+        <p>If you want to add a new category, please go to <a asp-controller="Categories" asp-action="Index">Categories</a></p>
         <p>
             <a asp-action="Create">Create New Recipe</a>
         </p>
@@ -26,19 +27,17 @@ else {
     <div class="row">
         @foreach (var item in Model)
         {
-            <div class="col-sm-4 mr-2">
+            <div class="col-sm-4">
                 <div class="card">
-                    <div class="card-body">
-                        <img src="@Url.Content(item.Image)" alt="Image" />
-                        @*<img src="@Html.DisplayFor(modelItem => item.Image)" />*@
-                        <p>@Html.DisplayFor(modelItem => item.Name)</p>
-                        <p>@Html.DisplayFor(modelItem => item.Category.Name)</p>
-                        <p>@Html.DisplayFor(modelItem => item.Ratings)</p>
-                        <a asp-action="Details" asp-route-id="@item.RecipeId">Details</a>
+                    <div class="card-body p-0 py-2">
+                        <img class="w-100" src="@Url.Content(item.Image)" alt="Image" />
+                        <p class="pl-2">@Html.DisplayFor(modelItem => item.Name)</p>
+                        <p class="pl-2">@Html.DisplayFor(modelItem => item.Category.Name)</p>
+                        <a class="m-2 form-control btn-primary w-25 text-center" asp-action="Details" asp-route-id="@item.RecipeId">Details</a>
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <a asp-action="Edit" asp-route-id="@item.RecipeId">Edit</a>
-                            <a asp-action="Delete" asp-route-id="@item.RecipeId">Delete</a>
+                            <a class="m-2 form-control btn-primary w-25 text-center" asp-action="Edit" asp-route-id="@item.RecipeId">Edit</a>
+                            <a class="m-2 form-control btn-primary w-25 text-center" asp-action="Delete" asp-route-id="@item.RecipeId">Delete</a>
                         }
                     </div>
                 </div>

@@ -20,15 +20,13 @@
 
         @foreach (var item in Model)
         {
-            <div class="col-sm-4 mr-2">
+            <div class="col-sm-4">
                 <div class="card">
-                    <div class="card-body">
-                        <p>@item.Image"</p>
-                        <p>@Html.DisplayFor(modelItem => item.Image)</p>
-                        <p>@Html.DisplayFor(modelItem => item.Name)</p>
-                        <p>@Html.DisplayFor(modelItem => item.Category.Name)</p>
-                        <p>@Html.DisplayFor(modelItem => item.Ratings)</p>
-                        <a asp-action="Details" asp-controller="Recipes" asp-route-id="@item.RecipeId">Details</a>
+                    <div class="card-body p-0">
+                        <img class="w-100" src="@Url.Content(item.Image)" alt="Image" />
+                        <p class="pl-2">@Html.DisplayFor(modelItem => item.Name)</p>
+                        <p class="pl-2">@Html.DisplayFor(modelItem => item.Category.Name)</p>
+                        <a class="pl-2" asp-action="Details" asp-controller="Recipes" asp-route-id="@item.RecipeId">Details</a>
                     </div>
                 </div>
             </div>

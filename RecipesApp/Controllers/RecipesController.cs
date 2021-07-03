@@ -74,7 +74,7 @@ namespace RecipesApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("RecipeId,Name,CategoryId,Ingredients,Description,CookingAdvice,Image,Ratings,IsSalable,Stock,Price")] Recipe recipe)
+        public async Task<IActionResult> Create([Bind("RecipeId,Name,CategoryId,Ingredients,Description,CookingAdvice,Image,IsSalable,Price")] Recipe recipe)
         {
             var recipeUser = await _userManager.GetUserAsync(HttpContext.User);
             recipe.RecipeUserId = recipeUser.Id;
@@ -118,7 +118,7 @@ namespace RecipesApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("RecipeId,Name,CategoryId,Ingredients,Description,CookingAdvice,Image,Ratings,IsSalable,Stock,Price, RecipeUserId")] Recipe recipe)
+        public async Task<IActionResult> Edit(int id, [Bind("RecipeId,Name,CategoryId,Ingredients,Description,CookingAdvice,Image,IsSalable,Price, RecipeUserId")] Recipe recipe)
         {
             if (id != recipe.RecipeId)
             {
@@ -129,22 +129,24 @@ namespace RecipesApp.Controllers
             {
                 try
                 {
-                    var oldRecipe = await _context.Recipes.FindAsync(id);
-                    var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-                    if(oldRecipe.RecipeUserId == currentUser.Id)
-					{
-                        return Unauthorized();
-					}
-                    oldRecipe.Name = recipe.Name;
-                    oldRecipe.Ingredients = recipe.Ingredients;
-                    oldRecipe.IsSalable = recipe.IsSalable;
-                    oldRecipe.Stock = recipe.Stock;
-                    oldRecipe.CookingAdvice = recipe.CookingAdvice;
-                    oldRecipe.Description = recipe.Description;
-                    oldRecipe.Price = recipe.Price;
-                    oldRecipe.Ratings = recipe.Ratings;
+                    // Editi kullaniciya gore engellemek istedim, fakat sorun olustugu icin kodu kapatmak zorunda kaldim.
 
-                    _context.Update(oldRecipe);
+                    // var oldRecipe = await _context.Recipes.FindAsync(id);
+                    // var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+                    // if(oldRecipe.RecipeUserId == currentUser.Id)
+                    //{
+                    // return Unauthorized();
+                    //}
+                    // oldRecipe.Name = recipe.Name;
+                    // oldRecipe.Ingredients = recipe.Ingredients;
+                    // oldRecipe.IsSalable = recipe.IsSalable;
+                    // oldRecipe.CookingAdvice = recipe.CookingAdvice;
+                    // oldRecipe.Description = recipe.Description;
+                    // oldRecipe.Price = recipe.Price;
+
+                    // _context.Update(oldRecipe);
+                    // await _context.SaveChangesAsync();
+                    _context.Update(recipe);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
