@@ -50,7 +50,7 @@ namespace RecipesApp.Controllers
                 return BadRequest();
             }
 
-            var recipe = await _context.Recipes
+            var recipe = await _context.Recipes.Include(t => t.Category)
                 .FirstOrDefaultAsync(m => m.RecipeId == id);
             if (recipe == null)
             {

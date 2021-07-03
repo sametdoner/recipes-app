@@ -14,7 +14,7 @@
                         <p class="pl-2">@Html.DisplayFor(modelItem => item.Name)</p>
                         <p class="pl-2">@Html.DisplayFor(modelItem => item.Category.Name)</p>
                         <p class="pl-2">@Html.DisplayFor(modelItem => item.Price)$</p>
-                        <a class="m-2 btn btn-primary form-control w-25 text-center" asp-action="Details" asp-controller="Recipes" asp-route-id="@item.RecipeId">Buy</a>
+                        <a class="m-2 btn btn-primary form-control w-25 text-center" asp-action="Details" asp-controller="Shop" asp-route-id="@item.RecipeId">Buy</a>
                     </div>
                 </div>
             </div>

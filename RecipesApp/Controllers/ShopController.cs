@@ -26,7 +26,24 @@ namespace RecipesApp.Controllers
 		}
 		public async Task<IActionResult> List()
 		{
-			return View(await _context.Recipes.Where(t => t.IsSalable).ToListAsync());
+			return View(await _context.Recipes.Include(t => t.Category).Where(t => t.IsSalable).ToListAsync());
+		}
+		// GET: Recipes/Details/5
+		public async Task<IActionResult> Details(int? id)
+		{
+			if (id == null)
+			{
+				return BadRequest();
+			}
+
+			var recipe = await _context.Recipes.Include(t => t.Category)
+				.FirstOrDefaultAsync(m => m.RecipeId == id);
+			if (recipe == null)
+			{
+				return NotFound();
+			}
+
+			return View(recipe);
 		}
 	}
 }
