@@ -6,7 +6,7 @@
 <div class="container">
     <div class="text-center">
         <h2>Welcome to the RecipeApp</h2>
-        <p class="mb-5">You can see the added recipes. By registering, you can create a new recipe and contribute to the platform. You can also sell your recipe on the platform if you want.</p>
+        <p class="mb-4">You can see the added recipes. By registering, you can create a new recipe and contribute to the platform. You can also sell your recipe on the platform if you want.</p>
     </div>
     <div class="row">
         @*<form asp-action="Index" asp-controller="Home" method="get">
@@ -21,7 +21,7 @@
 
         @foreach (var item in Model.Result)
         {
-            <div class="col-sm-4">
+            <div class="col-sm-4 mt-3">
                 <div class="card">
                     <div class="card-body p-0">
                         <img class="w-100" src="@Url.Content(item.Image)" alt="Image" />
