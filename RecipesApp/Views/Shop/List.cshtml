@@ -13,7 +13,8 @@
                         <img class="w-100" src="@Url.Content(item.Image)" alt="Image" />
                         <p class="pl-2">@Html.DisplayFor(modelItem => item.Name)</p>
                         <p class="pl-2">@Html.DisplayFor(modelItem => item.Category.Name)</p>
-                        <a class="m-2 btn btn-primary form-control w-25 text-center" asp-action="Details" asp-controller="Recipes" asp-route-id="@item.RecipeId">Details</a>
+                        <p class="pl-2">@Html.DisplayFor(modelItem => item.Price)$</p>
+                        <a class="m-2 btn btn-primary form-control w-25 text-center" asp-action="Details" asp-controller="Recipes" asp-route-id="@item.RecipeId">Buy</a>
                     </div>
                 </div>
             </div>
