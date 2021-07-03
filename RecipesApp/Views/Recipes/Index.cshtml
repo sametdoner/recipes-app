@@ -31,6 +31,11 @@ else {
                 <div class="card">
                     <div class="card-body p-0 py-2">
                         <img class="w-100" src="@Url.Content(item.Image)" alt="Image" />
+                        @if (item.IsSalable)
+                        {
+                            <span class="px-2 badge-secondary" style="float: right; border-radius: 5px;">Selling for @Html.DisplayFor(modelItem => item.Price)$</span>
+                        }
+                        
                         <p class="pl-2">@Html.DisplayFor(modelItem => item.Name)</p>
                         <p class="pl-2">@Html.DisplayFor(modelItem => item.Category.Name)</p>
                         <a class="m-2 form-control btn-primary w-25 text-center" asp-action="Details" asp-route-id="@item.RecipeId">Details</a>
